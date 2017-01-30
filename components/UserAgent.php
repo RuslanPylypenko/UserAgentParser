@@ -156,6 +156,7 @@ class UserAgent extends Component {
         $tplDesktop = '/windows|linux|mac(?=intosh|\s?os)/i';
         $tplMobile1 = '/mobi(?:le)?/i';
         $tplMobile2 = '/android|windows(?=\sphone)?|mac(?=intosh|\s?os)|symbos/i';
+        $tplBrowser = '/(firefox|opr|opera|chrome|safari|edge|msie|iemobile)\/([\d.]+)/i';
         $tplBot     = '/([\w]+bot)\/([\d.]+)/i';
 
         //$tplMobile1 = '/mobi(?:le)?|ipad|iphone|android/i';
@@ -204,8 +205,7 @@ class UserAgent extends Component {
 
         // BROWSER
 
-        $tpl = '/(firefox|opr|opera|chrome|safari|edge|msie|iemobile)\/([\d.]+)/i';
-        preg_match($tpl, $userAgent, $matches);
+        preg_match($tplBrowser, $userAgent, $matches);
         $browser = @$matches[1] ? $matches[1] : 'unknown';
         $browserVersion = @$matches[2] ? $matches[2] : 'unknown';
 
