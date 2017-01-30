@@ -114,19 +114,19 @@ class UserAgent extends Component {
         );
     }
 
-    public function lower($version) {
+    public function browserLower($version) {
         $browserVersion = (int) preg_replace('/[^\d]+/', '', $this->getBrowserVersion());
         $neededVersion  = (int) preg_replace('/[^\d]+/', '', $version);
         return ($browserVersion < $neededVersion);
     }
 
-    public function higher($version) {
+    public function browserHigher($version) {
         $browserVersion = (int) preg_replace('/[^\d]+/', '', $this->getBrowserVersion());
         $neededVersion  = (int) preg_replace('/[^\d]+/', '', $version);
         return ($browserVersion > $neededVersion);
     }
 
-    public function equal($version) {
+    public function browserEqual($version) {
         $browserVersion = (int) preg_replace('/[^\d]+/', '', $this->getBrowserVersion());
         $neededVersion  = (int) preg_replace('/[^\d]+/', '', $version);
         return ($browserVersion == $neededVersion);
@@ -289,21 +289,21 @@ class UserAgent extends Component {
         echo "Compare browser versions:\n";
 
         printf("%s = %s (%s)\n%s < %s (%s)\n%s > %s (%s)\n\n",
-            $browserVersionSelf, $browserVersionBelow, ($this->equal($browserVersionBelow)?'true':'false'),
-            $browserVersionSelf, $browserVersionBelow, ($this->lower($browserVersionBelow)?'true':'false'),
-            $browserVersionSelf, $browserVersionBelow, ($this->higher($browserVersionBelow)?'true':'false')
+            $browserVersionSelf, $browserVersionBelow, ($this->browserEqual($browserVersionBelow)?'true':'false'),
+            $browserVersionSelf, $browserVersionBelow, ($this->browserLower($browserVersionBelow)?'true':'false'),
+            $browserVersionSelf, $browserVersionBelow, ($this->browserHigher($browserVersionBelow)?'true':'false')
         );
 
         printf("%s = %s (%s)\n%s < %s (%s)\n%s > %s (%s)\n\n",
-            $browserVersionSelf, $browserVersionSelf, ($this->equal($browserVersionSelf)?'true':'false'),
-            $browserVersionSelf, $browserVersionSelf, ($this->lower($browserVersionSelf)?'true':'false'),
-            $browserVersionSelf, $browserVersionSelf, ($this->higher($browserVersionSelf)?'true':'false')
+            $browserVersionSelf, $browserVersionSelf, ($this->browserEqual($browserVersionSelf)?'true':'false'),
+            $browserVersionSelf, $browserVersionSelf, ($this->browserLower($browserVersionSelf)?'true':'false'),
+            $browserVersionSelf, $browserVersionSelf, ($this->browserHigher($browserVersionSelf)?'true':'false')
         );
 
         printf("%s = %s (%s)\n%s < %s (%s)\n%s > %s (%s)\n\n\n",
-            $browserVersionSelf, $browserVersionHigher, ($this->equal($browserVersionHigher)?'true':'false'),
-            $browserVersionSelf, $browserVersionHigher, ($this->lower($browserVersionHigher)?'true':'false'),
-            $browserVersionSelf, $browserVersionHigher, ($this->higher($browserVersionHigher)?'true':'false')
+            $browserVersionSelf, $browserVersionHigher, ($this->browserEqual($browserVersionHigher)?'true':'false'),
+            $browserVersionSelf, $browserVersionHigher, ($this->browserLower($browserVersionHigher)?'true':'false'),
+            $browserVersionSelf, $browserVersionHigher, ($this->browserHigher($browserVersionHigher)?'true':'false')
         );
 
 

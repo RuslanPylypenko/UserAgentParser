@@ -35,65 +35,100 @@
 ```php
 Yii::$app->userAgent-> ...
 
-Yii::$app->userAgent->getPlatform()
-//Alias: Yii::$app->userAgent->platform
+Yii::$app->userAgent->platform
+// Alias: Yii::$app->userAgent->getPlatform()
 
-Yii::$app->userAgent->getOs()
-//Alias: Yii::$app->userAgent->os
+Yii::$app->userAgent->os
+// Alias: Yii::$app->userAgent->getOs()
 
-Yii::$app->userAgent->getBrowser()
-//Alias: Yii::$app->userAgent->browser
+Yii::$app->userAgent->browser
+// Alias: Yii::$app->userAgent->getBrowser()
 
-Yii::$app->userAgent->getBrowserVersion()
-//Alias: Yii::$app->userAgent->browserVersion
+Yii::$app->userAgent->browserVersion
+// Alias: Yii::$app->userAgent->getBrowserVersion()
 
-Yii::$app->userAgent->getIsMobile()
-//Alias: Yii::$app->userAgent->isMobile
+Yii::$app->userAgent->isMobile
+// Alias: Yii::$app->userAgent->getIsMobile()
 
-Yii::$app->userAgent->getIsDesktop()
-//Alias: Yii::$app->userAgent->isDesktop
+Yii::$app->userAgent->isDesktop
+// Alias: Yii::$app->userAgent->getIsDesktop()
 
-Yii::$app->userAgent->getIsMobileHost()
-//Alias: Yii::$app->userAgent->isMobileHost
+Yii::$app->userAgent->isMobileHost
+// Alias: Yii::$app->userAgent->getIsMobileHost()
 
-Yii::$app->userAgent->getMobileLink()
-//Alias: Yii::$app->userAgent->mobileLink
+Yii::$app->userAgent->mobileLink
+// Alias: Yii::$app->userAgent->getMobileLink()
 
 #Compare browser versions
 // Compare browser for lower version
-Yii::$app->userAgent->lower('55.0.2883.87')
+Yii::$app->userAgent->browserLower('55.0.2883.87')
 
 // Compare browser for higher version
-Yii::$app->userAgent->higher('55.0.2883.86')
+Yii::$app->userAgent->browserHigher('55.0.2883.86')
 
 // Compare browser version for equals
-Yii::$app->userAgent->equal('55.0.2883.85')
+Yii::$app->userAgent->browserEqual('55.0.2883.85')
 ```
 
-#AUTO REDIRECT
+#REDIRECTING
 ```php
-    public function init() {
-        $this->getUsrAgent();
-        $this->Parse();
 
-        // Редирект по платформе
-        // (from Desktop -> http://m.localhost/...)
-        if ($this->isMobile) {
+// AUTO REDIRECT
+public function init() {
+    $this->getUsrAgent();
+    $this->Parse();
 
-            // Another way...
-            // $tpl = '/https?:\/\/m.'.Yii::$app->getRequest()->serverName.'/';
-            // if (preg_match($tpl, Yii::$app->getRequest()->hostInfo) == 0) {
+    // Редирект по платформе
+    // (from Desktop -> http://m.localhost/...)
+    if ($this->isMobile) {
 
-            if (! $this->isMobileHost) {
-                Yii::$app->getResponse()->redirect($this->mobileLink);
-                //$this->redirect($mobileUrl);
+        // Another way...
+        // $tpl = '/https?:\/\/m.'.Yii::$app->getRequest()->serverName.'/';
+        // if (preg_match($tpl, Yii::$app->getRequest()->hostInfo) == 0) {
 
-                Yii::$app->end();
-            }
+        if (! $this->isMobileHost) {
+            Yii::$app->getResponse()->redirect($this->mobileLink);
+            //$this->redirect($mobileUrl);
+
+            Yii::$app->end();
         }
-
-        parent::init();
     }
+
+    parent::init();
+}
+
+
+// MANIPULATION WITH REDIRECT
+
+if (Yii::$app->userAgent->isMobile) {
+    $this->redirect(...);
+}
+
+if (Yii::$app->userAgent->isDesktop) {
+    $this->redirect(...);
+}
+
+if (Yii::$app->userAgent->os == 'windowsphone') {
+    $this->redirect(...);
+}
+
+if (Yii::$app->userAgent->browser == 'chrome') {
+    $this->redirect(...);
+}
+
+if (Yii::$app->userAgent->browserLower('10.0.15.88')) {
+    $this->redirect(...);
+}
+
+if (Yii::$app->userAgent->browserHigher('10.0.15.88')) {
+    $this->redirect(...);
+}
+
+if (Yii::$app->userAgent->browserEqual('10.0.15.88')) {
+    $this->redirect(...);
+}
+
+
 ```
 
 #TESTING
