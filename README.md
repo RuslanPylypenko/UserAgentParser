@@ -20,28 +20,28 @@
 Yii::$app->userAgent-> ...
 
 Yii::$app->userAgent->getPlatform()
-Alias: Yii::$app->userAgent->platform
+//Alias: Yii::$app->userAgent->platform
 
 Yii::$app->userAgent->getOs()
-Alias: Yii::$app->userAgent->os
+//Alias: Yii::$app->userAgent->os
 
 Yii::$app->userAgent->getBrowser()
-Alias: Yii::$app->userAgent->browser
+//Alias: Yii::$app->userAgent->browser
 
 Yii::$app->userAgent->getBrowserVersion()
-Alias: Yii::$app->userAgent->browserVersion
+//Alias: Yii::$app->userAgent->browserVersion
 
 Yii::$app->userAgent->getIsMobile()
-Alias: Yii::$app->userAgent->isMobile
+//Alias: Yii::$app->userAgent->isMobile
 
 Yii::$app->userAgent->getIsDesktop()
-Alias: Yii::$app->userAgent->isDesktop
+//Alias: Yii::$app->userAgent->isDesktop
 
 Yii::$app->userAgent->getIsMobileHost()
-Alias: Yii::$app->userAgent->isMobileHost
+//Alias: Yii::$app->userAgent->isMobileHost
 
 Yii::$app->userAgent->getMobileLink()
-Alias: Yii::$app->userAgent->mobileLink
+//Alias: Yii::$app->userAgent->mobileLink
 
 #Compare browser versions
 // Compare browser for lower version
@@ -55,4 +55,6 @@ Yii::$app->userAgent->equal('55.0.2883.85')
 ```
 
 #TESTING
+```php
 Yii::$app->userAgent->test();
+```
