@@ -114,7 +114,79 @@ class UserAgent extends Component {
         );
     }
 
-    public function browserLower($version) {
+    public function getBrowserVersionMasks($aVersion='', $bVersion='') {
+        if (empty($bVersion)) {
+            if (empty($aVersion)) {
+                return false;
+            }
+
+            $bVersion = $this->getBrowserVersion();
+        }
+
+        $getMin = function($a,$b) {
+            return $a < $b ? $a : $b;
+        };
+
+        $aChunks = explode('.', $aVersion);
+        $bChunks = explode('.', $bVersion);
+
+        $aCount  = count($aChunks);
+        $bCount  = count($bChunks);
+
+        $minCount = $getMin($aCount, $bCount);
+
+        if ($aCount > $bCount) {
+            $aChunks = array_slice($aChunks, 0, $minCount);
+        } else {
+            $bChunks = array_slice($bChunks, 0, $minCount);
+        }
+
+        for ($i=0; $i<$minCount; $i+=1) {
+            $aLen = strlen($aChunks[$i]);
+            $bLen = strlen($bChunks[$i]);
+            $minLen = $getMin($aLen, $bLen);
+
+            if ($aLen > $bLen) {
+                $aChunks[$i] = substr($aChunks[$i], 0, $minLen);
+            } else {
+                $bChunks[$i] = substr($bChunks[$i], 0, $minLen);
+            }
+
+            // printf("%s - %s %s\n", $minLen, $aChunks[$i], $bChunks[$i]);
+        }
+
+        $aVersion = implode('', $aChunks);
+        $bVersion = implode('', $bChunks);
+
+        return [ $aVersion, $bVersion ];
+    }
+
+    public function browserCompare($mixedBrowsers) {
+        $tpl = '/([\d.]+)\s?([<=>])\s?([\d.]+)/';
+        preg_match($tpl, $mixedBrowsers, $matches);
+
+        if (count($matches) > 3) {
+            list($firstCompare, $secondCompare) =
+                $this->getBrowserVersionMasks($matches[1], $matches[3]);
+
+            $firstCompare  = (int) $firstCompare;
+            $secondCompare = (int) $secondCompare;
+
+            if ($matches[2] == '>') {
+                return ($firstCompare > $secondCompare);
+            } else if ($matches[2] == '<') {
+                return ($firstCompare < $secondCompare);
+            } else if ($matches[2] == '=') {
+                return ($firstCompare == $secondCompare);
+            }
+
+            // return [$firstCompare, $secondCompare];
+        }
+
+        return false;
+    }
+
+    /*public function browserLower($version) {
         $browserVersion = (int) preg_replace('/[^\d]+/', '', $this->getBrowserVersion());
         $neededVersion  = (int) preg_replace('/[^\d]+/', '', $version);
         return ($browserVersion < $neededVersion);
@@ -130,7 +202,7 @@ class UserAgent extends Component {
         $browserVersion = (int) preg_replace('/[^\d]+/', '', $this->getBrowserVersion());
         $neededVersion  = (int) preg_replace('/[^\d]+/', '', $version);
         return ($browserVersion == $neededVersion);
-    }
+    }*/
 
 
     private function Parse() {
@@ -280,31 +352,23 @@ class UserAgent extends Component {
             'Mozilla/5.0 (compatible; Yahoo! Slurp; http://help.yahoo.com/help/us/ysearch/slurp)'
         ];
 
-        $browserVersionSelf   = '55.0.2883.87';
-        $browserVersionBelow  = '55.0.2883.86';
-        $browserVersionHigher = '55.0.2883.88';
-
 
         echo "<pre>";
         echo "Compare browser versions:\n";
 
-        printf("%s = %s (%s)\n%s < %s (%s)\n%s > %s (%s)\n\n",
-            $browserVersionSelf, $browserVersionBelow, ($this->browserEqual($browserVersionBelow)?'true':'false'),
-            $browserVersionSelf, $browserVersionBelow, ($this->browserLower($browserVersionBelow)?'true':'false'),
-            $browserVersionSelf, $browserVersionBelow, ($this->browserHigher($browserVersionBelow)?'true':'false')
-        );
+        printf("55.0.2883.86 > 55.01.27 (%s)\n", $this->browserCompare('55.0.2883.86 > 55.01.27')?'true':'false');
+        printf("55.0.2883.86 > 55.01.28 (%s)\n", $this->browserCompare('55.0.2883.86 > 55.01.28')?'true':'false');
+        printf("55.0.2883.86 > 55.01.29 (%s)\n\n", $this->browserCompare('55.0.2883.86 > 55.01.29')?'true':'false');
 
-        printf("%s = %s (%s)\n%s < %s (%s)\n%s > %s (%s)\n\n",
-            $browserVersionSelf, $browserVersionSelf, ($this->browserEqual($browserVersionSelf)?'true':'false'),
-            $browserVersionSelf, $browserVersionSelf, ($this->browserLower($browserVersionSelf)?'true':'false'),
-            $browserVersionSelf, $browserVersionSelf, ($this->browserHigher($browserVersionSelf)?'true':'false')
-        );
+        printf("55.0.2883.86 < 55.01.27 (%s)\n", $this->browserCompare('55.0.2883.86 < 55.01.27')?'true':'false');
+        printf("55.0.2883.86 < 55.01.28 (%s)\n", $this->browserCompare('55.0.2883.86 < 55.01.28')?'true':'false');
+        printf("55.0.2883.86 < 55.01.29 (%s)\n\n", $this->browserCompare('55.0.2883.86 < 55.01.29')?'true':'false');
 
-        printf("%s = %s (%s)\n%s < %s (%s)\n%s > %s (%s)\n\n\n",
-            $browserVersionSelf, $browserVersionHigher, ($this->browserEqual($browserVersionHigher)?'true':'false'),
-            $browserVersionSelf, $browserVersionHigher, ($this->browserLower($browserVersionHigher)?'true':'false'),
-            $browserVersionSelf, $browserVersionHigher, ($this->browserHigher($browserVersionHigher)?'true':'false')
-        );
+        printf("55.0.2883.86 = 55.01.27 (%s)\n", $this->browserCompare('55.0.2883.86 = 55.01.27')?'true':'false');
+        printf("55.0.2883.86 = 55.01.28 (%s)\n", $this->browserCompare('55.0.2883.86 = 55.01.28')?'true':'false');
+        printf("55.0.2883.86 = 55.01.29 (%s)\n\n", $this->browserCompare('55.0.2883.86 = 55.01.29')?'true':'false');
+
+        printf($this->getBrowserVersion()." = 55.01.29 (%s)\n\n", $this->browserCompare('55.0.2883.86 = 55.01.29')?'true':'false');
 
 
         // Self User-Agent info
