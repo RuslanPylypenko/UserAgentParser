@@ -61,13 +61,13 @@ Yii::$app->userAgent->mobileLink
 
 #Compare browser versions
 // Compare browser for lower version
-Yii::$app->userAgent->browserLower('55.0.2883.87')
+Yii::$app->userAgent->browserCompare('55.0.2883.86 < 55.01.27')
 
 // Compare browser for higher version
-Yii::$app->userAgent->browserHigher('55.0.2883.86')
+Yii::$app->userAgent->browserCompare('55.0.2883.86 > 55.01.27')
 
 // Compare browser version for equals
-Yii::$app->userAgent->browserEqual('55.0.2883.85')
+Yii::$app->userAgent->browserCompare('55.0.2883.86 = 55.01.27')
 
 
 #REDIRECTING
@@ -115,15 +115,15 @@ if (Yii::$app->userAgent->browser == 'chrome') {
     $this->redirect(...);
 }
 
-if (Yii::$app->userAgent->browserLower('10.0.15.88')) {
+if (Yii::$app->userAgent->browserCompare('55.0.2883.86 > 55.01.27')) {
     $this->redirect(...);
 }
 
-if (Yii::$app->userAgent->browserHigher('10.0.15.88')) {
+if (Yii::$app->userAgent->browserCompare('55.0.2883.86 < 55.01.27')) {
     $this->redirect(...);
 }
 
-if (Yii::$app->userAgent->browserEqual('10.0.15.88')) {
+if (Yii::$app->userAgent->browserCompare('55.0.2883.86 = 55.01.27')) {
     $this->redirect(...);
 }
 
