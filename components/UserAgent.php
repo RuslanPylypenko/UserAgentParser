@@ -70,7 +70,7 @@ class UserAgent extends Component {
         parent::init();
     }
 
-    public function getUsrAgent() {
+    private function getUsrAgent() {
         if (empty($this->_userAgent)) {
             $this->_usrAgent = strtolower(Yii::$app->getRequest()->getUserAgent());
         }
