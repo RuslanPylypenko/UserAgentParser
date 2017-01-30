@@ -68,10 +68,9 @@ Yii::$app->userAgent->browserHigher('55.0.2883.86')
 
 // Compare browser version for equals
 Yii::$app->userAgent->browserEqual('55.0.2883.85')
-```
+
 
 #REDIRECTING
-```php
 
 // AUTO REDIRECT
 public function init() {
