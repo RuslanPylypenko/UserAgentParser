@@ -70,6 +70,32 @@ Yii::$app->userAgent->higher('55.0.2883.86')
 Yii::$app->userAgent->equal('55.0.2883.85')
 ```
 
+#AUTO REDIRECT
+```php
+    public function init() {
+        $this->getUsrAgent();
+        $this->Parse();
+
+        // Редирект по платформе
+        // (from Desktop -> http://m.localhost/...)
+        if ($this->isMobile) {
+
+            // Another way...
+            // $tpl = '/https?:\/\/m.'.Yii::$app->getRequest()->serverName.'/';
+            // if (preg_match($tpl, Yii::$app->getRequest()->hostInfo) == 0) {
+
+            if (! $this->isMobileHost) {
+                Yii::$app->getResponse()->redirect($this->mobileLink);
+                //$this->redirect($mobileUrl);
+
+                Yii::$app->end();
+            }
+        }
+
+        parent::init();
+    }
+```
+
 #TESTING
 ```php
 Yii::$app->userAgent->test();
