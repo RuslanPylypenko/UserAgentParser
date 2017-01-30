@@ -127,6 +127,10 @@ class UserAgent extends Component {
             return $a < $b ? $a : $b;
         };
 
+        $getMax = function($a,$b) {
+            return $a > $b ? $a : $b;
+        };
+
         $aChunks = explode('.', $aVersion);
         $bChunks = explode('.', $bVersion);
 
@@ -144,12 +148,26 @@ class UserAgent extends Component {
         for ($i=0; $i<$minCount; $i+=1) {
             $aLen = strlen($aChunks[$i]);
             $bLen = strlen($bChunks[$i]);
+
+            $maxLen = $getMax($aLen, $bLen);
             $minLen = $getMin($aLen, $bLen);
 
-            if ($aLen > $bLen) {
-                $aChunks[$i] = substr($aChunks[$i], 0, $minLen);
+            if ($i+1<$minCount) {
+
+                if ($aLen > $bLen) {
+                    $aChunks[$i] = (int) substr($aChunks[$i], 0, $maxLen);
+                } else if ($aLen < $bLen) {
+                    $bChunks[$i] = (int) substr($bChunks[$i], 0, $maxLen);
+                }
+
             } else {
-                $bChunks[$i] = substr($bChunks[$i], 0, $minLen);
+
+                if ($aLen > $bLen) {
+                    $aChunks[$i] = (int) substr($aChunks[$i], 0, $minLen);
+                } else if ($aLen < $bLen) {
+                    $bChunks[$i] = (int) substr($bChunks[$i], 0, $minLen);
+                }
+
             }
 
             // printf("%s - %s %s\n", $minLen, $aChunks[$i], $bChunks[$i]);
@@ -357,18 +375,18 @@ class UserAgent extends Component {
         echo "Compare browser versions:\n";
 
         printf("55.0.2883.86 > 55.01.27 (%s)\n", $this->browserCompare('55.0.2883.86 > 55.01.27')?'true':'false');
-        printf("55.0.2883.86 > 55.01.28 (%s)\n", $this->browserCompare('55.0.2883.86 > 55.01.28')?'true':'false');
+        printf("55.0.2883.86 > 55.0.28 (%s)\n", $this->browserCompare('55.0.2883.86 > 55.0.28')?'true':'false');
         printf("55.0.2883.86 > 55.01.29 (%s)\n\n", $this->browserCompare('55.0.2883.86 > 55.01.29')?'true':'false');
 
         printf("55.0.2883.86 < 55.01.27 (%s)\n", $this->browserCompare('55.0.2883.86 < 55.01.27')?'true':'false');
-        printf("55.0.2883.86 < 55.01.28 (%s)\n", $this->browserCompare('55.0.2883.86 < 55.01.28')?'true':'false');
+        printf("55.0.2883.86 < 55.0.28 (%s)\n", $this->browserCompare('55.0.2883.86 < 55.0.28')?'true':'false');
         printf("55.0.2883.86 < 55.01.29 (%s)\n\n", $this->browserCompare('55.0.2883.86 < 55.01.29')?'true':'false');
 
         printf("55.0.2883.86 = 55.01.27 (%s)\n", $this->browserCompare('55.0.2883.86 = 55.01.27')?'true':'false');
-        printf("55.0.2883.86 = 55.01.28 (%s)\n", $this->browserCompare('55.0.2883.86 = 55.01.28')?'true':'false');
+        printf("55.0.2883.86 = 55.0.28 (%s)\n", $this->browserCompare('55.0.2883.86 = 55.0.28')?'true':'false');
         printf("55.0.2883.86 = 55.01.29 (%s)\n\n", $this->browserCompare('55.0.2883.86 = 55.01.29')?'true':'false');
 
-        printf($this->getBrowserVersion()." = 55.01.29 (%s)\n\n", $this->browserCompare('55.0.2883.86 = 55.01.29')?'true':'false');
+        printf($this->getBrowserVersion()." = 55.0.29 (%s)\n\n", $this->browserCompare('55.0.2883.86 = 55.0.29')?'true':'false');
 
 
         // Self User-Agent info
